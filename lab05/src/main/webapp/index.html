@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Ubigeo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1><i class="fas fa-map-marked-alt"></i> Consulta de Ubigeo</h1>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label for="dep"><i class="fas fa-flag"></i> Departamento</label>
+                <select id="dep">
+                    <option value="">-- Selecciona un departamento --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pro"><i class="fas fa-city"></i> Provincia</label>
+                <select id="pro" disabled>
+                    <option value="">-- Selecciona una provincia --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dis"><i class="fas fa-map-pin"></i> Distrito</label>
+                <select id="dis" disabled>
+                    <option value="">-- Selecciona un distrito --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Aquí se mostrará el mensaje con domicilio y botón enviar -->
+        <div id="mensajeUbigeo" class="mensaje-ubigeo"></div>
+    </div>
+
+    <script src="js/ubigeo.js"></script>
+</body>
+
+</html>
