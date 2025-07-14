@@ -42,7 +42,7 @@ Cibertec_ejercicios/
 │   └── WEB-INF/
 │       ├── web.xml                   # Configuración Servlet
 │       └── lib/                      # Dependencias (JDBC driver)
-
+```
 
 ## 🗃️ Base de datos
 ```sql
@@ -76,6 +76,7 @@ CREATE TABLE registro_ubicacion (
   FOREIGN KEY (idprovincia) REFERENCES provincia(idprovincia),
   FOREIGN KEY (iddistrito) REFERENCES distrito(iddistrito)
 );
+```
 
 ## ⚙️ 1. Configuración
 
@@ -84,15 +85,15 @@ CREATE TABLE registro_ubicacion (
 String url = "jdbc:mysql://localhost:3306/tu_basedatos?useSSL=false";
 String username = "root";
 String password = "123456";
-
+```
 
 ## ⚙️ 2. Configuración Tomcat:
 
-```plaintext
+
 Asegúrate de tener el JDBC Driver (mysql-connector-j) en:
-
+```plaintext
 WEB-INF/lib/
-
+```
 ## ⚙️ 3. Configuración web.xml
 ```xml
 <servlet>
@@ -103,7 +104,7 @@ WEB-INF/lib/
     <servlet-name>ubigeoServlet</servlet-name>
     <url-pattern>/ubigeo</url-pattern>
 </servlet-mapping>
-
+```
 
 
   ## ▶️ Cómo ejecutar el proyecto
@@ -114,22 +115,23 @@ WEB-INF/lib/
 
 2. Importar en IntelliJ IDEA:
 
-✅ Abre IntelliJ y selecciona "Open" o "Import Project"
-✅ Elige la carpeta del proyecto
-✅ Selecciona "Import as Java EE Project"
+#### ✅ Abre IntelliJ y selecciona "Open" o "Import Project"
+#### ✅ Elige la carpeta del proyecto
+#### ✅ Selecciona "Import as Java EE Project"
 
 3. Configurar la base de datos:
 
-✅ Ejecuta el script SQL proporcionado en tu gestor de MySQL
-✅ Verifica que las tablas se hayan creado correctamente
+#### ✅ Ejecuta el script SQL proporcionado en tu gestor de MySQL
+#### ✅ Verifica que las tablas se hayan creado correctamente
 
 4. Configurar conexión en DatabaseUtil.java:   
+
+#### En src/main/java/com/example/util/DatabaseUtil.java
 ```java
-// En src/main/java/com/example/util/DatabaseUtil.java
 String url = "jdbc:mysql://localhost:3306/tu_basedatos";
 String username = "tu_usuario";
 String password = "tu_contraseña";
-
+```
 ## 🚀 Mejoras Avanzadas Pendientes
 
 ### 🔧 Arquitectura y Frameworks
@@ -164,8 +166,9 @@ class UbigeoServiceTest {
         verify(repository).save(any());
     }
 }
+```
+---
 
-### 📦 DevOps Integrado
 # 🐳 Configuración Docker Compose para Entorno de Desarrollo
 
 ## 📁 docker-compose.yml
@@ -173,20 +176,17 @@ class UbigeoServiceTest {
 version: '3.8'
 
 services:
-  # Servicio de Base de Datos MySQL
   mysql:
     image: mysql:8.0
     container_name: ubigeo-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 123456          # Contraseña de root (cambiar en producción)
-      MYSQL_DATABASE: ubigeo_db            # Base de datos automáticamente creada
-      MYSQL_USER: ubigeo_user              # Usuario recomendado (añadir)
-      MYSQL_PASSWORD: ubigeo_pass          # Contraseña recomendada (añadir)
-      TZ: America/Lima                     # Zona horaria
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ubigeo_db
+      TZ: America/Lima
     ports:
-      - "3306:3306"                        # Puerto expuesto
+      - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql          # Persistencia de datos
+      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -195,34 +195,29 @@ services:
     networks:
       - ubigeo-network
 
-  # Servicio de Aplicación Java
   app:
-    build:
-      context: .                           # Usa el Dockerfile en el directorio actual
-      dockerfile: Dockerfile               # Nombre del archivo Dockerfile
+    image: tomcat:10.1-jdk17
     container_name: ubigeo-app
     ports:
-      - "8080:8080"                        # Puerto para Tomcat
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ubigeo_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 123456
+      - "8080:8080"
+    volumes:
+      - ./target/lab05.war:/usr/local/tomcat/webapps/lab05.war
     depends_on:
       mysql:
-        condition: service_healthy         # Espera hasta que MySQL esté listo
+        condition: service_healthy
     networks:
       - ubigeo-network
     restart: unless-stopped
 
-# Configuraciones adicionales
 volumes:
-  mysql_data:                              # Volumen para persistencia de MySQL
+  mysql_data:
 
 networks:
-  ubigeo-network:                         # Red aislada para los servicios
+  ubigeo-network:
     driver: bridge
 
 
+```
 
 
 ## 🛠️ Evolución Tecnológica Recomendada
@@ -259,7 +254,7 @@ public class Ubigeo {
 public interface UbigeoMapper {
     UbigeoDto toDto(Ubigeo entity);
 }
-
+```
 
 ## 🤔 ¿Necesitas Incorporar Frameworks?
 
@@ -277,7 +272,7 @@ public interface UbigeoMapper {
 - Prototipos temporales (time-to-market rápido)
 - Entornos con restricciones de tamaño (IoT/Embedded)
 - Cuando el overhead > beneficios (microservicios muy pequeños)
-
+```
 ## 📊 Benchmark Comparativo: Servlets vs Spring Boot
 
 | Métrica               | Servlets        | Spring Boot     | Diferencia Visual |
@@ -301,16 +296,28 @@ public interface UbigeoMapper {
 
 ## 👨‍💻 Autor
 
-<div align="center">
-  <img src="https://avatars.githubusercontent.com/u/tu-user-id?v=4" width="100" style="border-radius: 50%;">
+**Styp Canto**  
+*Desarrollador Java Full Stack*
+
+[![GitHub](https://img.shields.io/badge/GitHub-@stypcanto-181717?style=for-the-badge&logo=github)](https://github.com/stypcanto)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Perfil-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/tu-perfil)  
+[![Email](https://img.shields.io/badge/Email-Contactar-red?style=for-the-badge&logo=gmail)](mailto:tu@email.com)
+
+
+
+
+
   
-  **Styp Canto**  
-  *Estudiante de Java – Cibertec*  
-  
-  [![GitHub](https://img.shields.io/badge/GitHub-@stypcanto-181717?style=for-the-badge&logo=github)](https://github.com/stypcanto)
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Perfil-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/tu-perfil)
-  [![Email](https://img.shields.io/badge/Email-Contactar-red?style=for-the-badge&logo=gmail)](mailto:tu@email.com)
-</div>
+  ```java
+  public class SobreMi {
+    public static void main(String[] args) {
+      System.out.println("Apasionado por el desarrollo backend");
+      System.out.println("Especializado en Java EE y Spring Boot");
+      System.out.println("Construyendo soluciones escalables");
+    }
+  }
+
+  ```
 
 ### 📚 Sobre Mí
 - 🔭 Actualmente trabajando en mejorar mis habilidades Java EE
@@ -321,8 +328,3 @@ public interface UbigeoMapper {
 
 ### 🏆 Logros
 [![GitHub Streak](https://streak-stats.demolab.com?user=stypcanto&theme=dark)](https://git.io/streak-stats)
-
----
-
-📄 **Licencia**: Este proyecto es de uso académico bajo licencia MIT.  
-✨ "El conocimiento se comparte, no se guarda" - Filosofía Open Source
