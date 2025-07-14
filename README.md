@@ -173,48 +173,50 @@ class UbigeoServiceTest {
 
 ## 📁 docker-compose.yml
 ```yaml
+
+
+# Versión de la sintaxis de Docker Compose
+# Desde Compose v3.9 ya no es necesaria, por eso da una advertencia
 version: '3.8'
 
 services:
+  # Servicio 1: Base de datos MySQL
   mysql:
-    image: mysql:8.0
-    container_name: ubigeo-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: ubigeo_db
-      TZ: America/Lima
+    image: mysql:latest                       # Usa la última imagen oficial de MySQL desde Docker Hub
+    container_name: mysql-container           # Nombre fijo para el contenedor, útil para identificarlo
+    environment:                              # Variables de entorno para configurar MySQL
+      MYSQL_ROOT_PASSWORD: 123456             # Contraseña del usuario root (¡nunca uses esta en producción!)
+      MYSQL_DATABASE: 202502_129V             # Nombre de la base de datos que se crea al iniciar
     ports:
-      - "3306:3306"
+      - "3306:3306"                           # Expone el puerto 3306 al host, para poder conectarte desde tu PC
     volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - mysql-data:/var/lib/mysql             # Monta un volumen para guardar los datos de forma persistente
     networks:
-      - ubigeo-network
+      - red-interna                           # Conecta este contenedor a una red interna compartida
 
-  app:
-    image: tomcat:10.1-jdk17
-    container_name: ubigeo-app
+  # Servicio 2: Aplicación Java en Tomcat
+  tomcat:
+    build: .                                  # Construye la imagen usando el Dockerfile del directorio actual (./)
+    container_name: tomcat-app                # Nombre del contenedor de la aplicación web
     ports:
-      - "8080:8080"
-    volumes:
-      - ./target/lab05.war:/usr/local/tomcat/webapps/lab05.war
+      - "8080:8080"                           # Expone el puerto 8080 para acceder desde el navegador (http://localhost:8080)
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql                                 # Asegura que el contenedor de MySQL se inicie antes que Tomcat
     networks:
-      - ubigeo-network
-    restart: unless-stopped
+      - red-interna                           # También se conecta a la red interna para comunicarse con MySQL
 
+# Definición de volúmenes (almacenamiento persistente)
 volumes:
-  mysql_data:
+  mysql-data:
+    external: true                            # Usa un volumen ya existente (NO lo crea automáticamente)
+    name: 8d146fb5ac3c7020708772f535f7e64bd97101f32b9ae3e14aae7fb306311ffe
+    # Nombre real del volumen que contiene tus datos previos de MySQL
 
+# Definición de redes internas entre los contenedores
 networks:
-  ubigeo-network:
-    driver: bridge
+  red-interna:
+    driver: bridge                            # Tipo de red por defecto: permite comunicación interna segura entre contenedores
+
 
 
 ```
