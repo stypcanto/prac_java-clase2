@@ -56,7 +56,7 @@ Cibertec_ejercicios/
         └── test/
             ├── java/                         # (Opcional para tests)
             └── resources/
-
+```
 
 ## 🗃️ Base de datos
 ```sql
