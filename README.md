@@ -16,33 +16,47 @@ Aplicación web para selección jerárquica de ubicación geográfica (Departame
 
 ## 🛠️ Stack Tecnológico
 
-| Categoría       | Tecnologías                     |
-|-----------------|---------------------------------|
-| Backend         | Java 17+, Jakarta EE Servlets   |
-| Frontend        | HTML5, CSS3, JavaScript vanilla |
-| Servidor        | Apache Tomcat 10.1              |
-| Base de datos   | MySQL 8.x                       |
-| Conexión BD     | JDBC Driver (`mysql-connector-j`)|
-| IDE             | IntelliJ IDEA                   |
+| Categoría       | Tecnologías                            |
+|-----------------|----------------------------------------|
+| Backend         | Java 17+, Jakarta EE (`javax.servlet`) |
+| Frontend        | HTML5, CSS3, JavaScript vanilla        |
+| Servidor        | Apache Tomcat 9.x                      |
+| Base de datos   | MySQL 8.x                              |
+| Conexión BD     | JDBC Driver (`mysql-connector-j`)      |
+| IDE             | IntelliJ IDEA                          |
+| Contenedores    | Docker, Docker Compose                 |
 
-## 📂 Estructura del Proyecto
+---
+
+## 📂 Estructura del Proyecto Ubigeo
 
 ```plaintext
 Cibertec_ejercicios/
-│
-├── Ejercicio1/
-│   ├── src/
-│   │   └── com/example/lab05/
-│   │       ├── UbigeoServlet.java    # Controlador principal
-│   │       └── DatabaseUtil.java     # Utilidades de conexión a BD (opcional)
-│   ├── web/
-│   │   ├── index.html                # Vista principal
-│   │   ├── script.js                 # Lógica frontend
-│   │   └── style.css                 # Estilos
-│   └── WEB-INF/
-│       ├── web.xml                   # Configuración Servlet
-│       └── lib/                      # Dependencias (JDBC driver)
-```
+└── Ejercicio2/
+    ├── docker-compose.yml              # Orquestación de servicios (Tomcat + MySQL)
+    ├── Dockerfile                      # Imagen personalizada de Tomcat con WAR desplegado
+    ├── pom.xml                         # Configuración de dependencias y build (Maven)
+    ├── target/
+    │   └── lab05.war                   # Archivo WAR generado para despliegue
+    └── src/
+        ├── main/
+        │   ├── java/
+        │   │   └── com/example/lab05/
+        │   │       ├── UbigeoServlet.java    # Servlet principal
+        │   │       └── HelloServlet.java     # Servlet de prueba
+        │   ├── resources/                    # (Vacío o config adicionales)
+        │   └── webapp/
+        │       ├── index.html                # Página de inicio
+        │       ├── css/
+        │       │   └── estilos.css           # Estilos frontend
+        │       ├── js/
+        │       │   └── ubigeo.js             # JS frontend
+        │       └── WEB-INF/
+        │           └── web.xml               # Configuración de servlets
+        └── test/
+            ├── java/                         # (Opcional para tests)
+            └── resources/
+
 
 ## 🗃️ Base de datos
 ```sql
@@ -80,58 +94,58 @@ CREATE TABLE registro_ubicacion (
 
 ## ⚙️ 1. Configuración
 
-### Configuración BD que esta en un Docker (en DatabaseUtil.java):
+### ⚙️ Configuración de la Base de Datos (en `DatabaseUtil.java`)
+
+Cuando el proyecto se ejecuta dentro de Docker (con `docker-compose`), **el hostname no debe ser `localhost`**, sino el **nombre del servicio** definido en `docker-compose.yml`, que normalmente es `mysql`:
+
 ```java
-String url = "jdbc:mysql://localhost:3306/tu_basedatos?useSSL=false";
+String url = "jdbc:mysql://mysql:3306/ubigeo_db?useSSL=false&allowPublicKeyRetrieval=true";
 String username = "root";
 String password = "123456";
 ```
 
-## ⚙️ 2. Configuración Tomcat:
+## ⚙️ 2. Configuración de Tomcat (usando Docker)
 
+El proyecto se empaqueta como un archivo `.war` usando Maven, y se despliega automáticamente en un contenedor de Tomcat mediante Docker.
 
-Asegúrate de tener el JDBC Driver (mysql-connector-j) en:
-```plaintext
-WEB-INF/lib/
+### ✅ JDBC Driver
+
+No es necesario colocar manualmente el `mysql-connector-j` en `WEB-INF/lib/`.  
+Maven se encarga de descargar la dependencia automáticamente y la incluye en el `.war` generado durante el build (`mvn clean package`).
+
+Asegúrate de que en tu `pom.xml` esté incluida esta dependencia:
+
+```xml
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <version>8.0.33</version>
+</dependency>
 ```
+
+
 ## ⚙️ 3. Configuración web.xml
 ```xml
-<servlet>
-    <servlet-name>ubigeoServlet</servlet-name>
-    <servlet-class>com.example.lab05.UbigeoServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>ubigeoServlet</servlet-name>
-    <url-pattern>/ubigeo</url-pattern>
-</servlet-mapping>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="6.0">
+    <!-- No se definen servlets aquí ya que se usan anotaciones (@WebServlet) -->
+<!-- 
+📄 El archivo web.xml ubicado en src/main/webapp/WEB-INF/ tiene una configuración mínima, 
+ya que el proyecto utiliza anotaciones de Jakarta EE (@WebServlet) para registrar los servlets automáticamente.
+
+✅ Esto permite mantener el archivo limpio y aprovechar las capacidades modernas del estándar Jakarta EE 10 
+(compatible con Tomcat 10.1).
+
+Si en el futuro se requiere una configuración explícita, se pueden añadir manualmente etiquetas 
+<servlet> y <servlet-mapping>.
+-->
+
+
+</web-app>
+
 ```
 
 
-  ## ▶️ Cómo ejecutar el proyecto
-
-1. **Clonar el repositorio**:
-   ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
-
-2. Importar en IntelliJ IDEA:
-
-#### ✅ Abre IntelliJ y selecciona "Open" o "Import Project"
-#### ✅ Elige la carpeta del proyecto
-#### ✅ Selecciona "Import as Java EE Project"
-
-3. Configurar la base de datos:
-
-#### ✅ Ejecuta el script SQL proporcionado en tu gestor de MySQL
-#### ✅ Verifica que las tablas se hayan creado correctamente
-
-4. Configurar conexión en DatabaseUtil.java:   
-
-#### En src/main/java/com/example/util/DatabaseUtil.java
-```java
-String url = "jdbc:mysql://localhost:3306/tu_basedatos";
-String username = "tu_usuario";
-String password = "tu_contraseña";
-```
 ## 🚀 Mejoras Avanzadas Pendientes
 
 ### 🔧 Arquitectura y Frameworks
