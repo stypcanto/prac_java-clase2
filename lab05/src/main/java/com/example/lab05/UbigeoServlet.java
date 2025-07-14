@@ -2,10 +2,12 @@
 package com.example.lab05;
 
 // Importación de clases necesarias para Servlets
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
 
 // Importación de clases para entrada/salida, base de datos y estructuras de datos
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class UbigeoServlet extends HttpServlet {
 
             // Establecer conexión a la base de datos
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/202502_129V?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
+                    "jdbc:mysql://mysql:3306/202502_129V?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
                     "root", "123456"
             );
 
@@ -164,9 +166,10 @@ public class UbigeoServlet extends HttpServlet {
 
             // Establecer la conexión con la base de datos
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/202502_129V?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
+                    "jdbc:mysql://mysql:3306/202502_129V?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
                     "root", "123456"
             );
+
 
             // Preparar la sentencia SQL con parámetros (?) para evitar inyección SQL
             String sql = "INSERT INTO registro_ubicacion (iddepartamento, idprovincia, iddistrito, direccion) VALUES (?, ?, ?, ?)";
