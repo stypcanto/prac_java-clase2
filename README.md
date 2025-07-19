@@ -235,6 +235,36 @@ networks:
 
 ```
 
+### ▶️ Pasos para compilar y ejecutar
+
+1. 📦 Compilar el proyecto con Maven:
+   ```bash
+   mvn clean package
+   ```
+2. 🚀 Construir y ejecutar los contenedores:
+
+   ```bash
+   docker-compose up --build -d
+   ```
+
+3. Una vez iniciado, puedes acceder a tu aplicación web desde:
+   ```arduino
+   http://localhost:8081/
+   ```
+
+## 🖼️ Vista previa de funcionamiento
+
+A continuación, se muestra una imagen sobre como funciona a nivel Front-End:
+
+![Vista previa del formulario AJAX](docs/Registro%20de%20ubicación.png)
+
+A continuación, se muestra una imagen sobre como funciona a nivel de Base de Datos (MySQL):
+
+![Vista previa del formulario AJAX](docs/Diagrama%20de%20Base%20de%20Datos.png)
+
+A continuación, se muestra una imagen sobre como funciona el almacenamiento:
+
+![Vista previa del formulario AJAX](docs/Registro%20de%20datos%20que%20se%20almacena.png)
 
 ## 🛠️ Evolución Tecnológica Recomendada
 
@@ -312,7 +342,7 @@ public interface UbigeoMapper {
 
 ## 👨‍💻 Autor
 
-**Styp Canto**  
+**Styp Canto Rondón**  
 *Desarrollador Java Full Stack*
 
 [![GitHub](https://img.shields.io/badge/GitHub-@stypcanto-181717?style=for-the-badge&logo=github)](https://github.com/stypcanto)  
@@ -320,10 +350,6 @@ public interface UbigeoMapper {
 [![Email](https://img.shields.io/badge/Email-Contactar-red?style=for-the-badge&logo=gmail)](mailto:tu@email.com)
 
 
-
-
-
-  
   ```java
   public class SobreMi {
     public static void main(String[] args) {
@@ -334,13 +360,3 @@ public interface UbigeoMapper {
   }
 
   ```
-
-### 📚 Sobre Mí
-- 🔭 Actualmente trabajando en mejorar mis habilidades Java EE
-- 🌱 Aprendiendo Spring Boot y arquitecturas limpias
-- 💬 Pregúntame sobre Servlets y JDBC
-- 📫 Cómo contactarme: [Twitter @tuusuario](https://twitter.com/tuusuario)
-- ⚡ Dato curioso: Amante del café ☕ y la programación funcional
-
-### 🏆 Logros
-[![GitHub Streak](https://streak-stats.demolab.com?user=stypcanto&theme=dark)](https://git.io/streak-stats)
